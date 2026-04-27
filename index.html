@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7-Day Mediterranean Cardiac Meal Plan</title>
+<style>
+  /* System font stack — fully offline, works on every phone */
+  :root {
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  :root {
+    --olive: #5c6b2e;
+    --olive-light: #7a8c3a;
+    --terra: #b85c38;
+    --sand: #f5f0e8;
+    --sand-dark: #e8dfc8;
+    --ink: #2a2418;
+    --muted: #7a7060;
+    --white: #fdfbf7;
+    --seafoam: #3a7060;
+    --seafoam-light: #4a8878;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--sand);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--olive);
+    color: var(--white);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 20px,
+      rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 21px
+    );
+  }
+  header h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    position: relative;
+  }
+  header p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 6px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  /* SERVING TOGGLE */
+  .serving-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 24px auto 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 4px;
+    width: fit-content;
+    position: relative;
+  }
+  .serving-toggle button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+  }
+  .serving-toggle button.active {
+    background: var(--white);
+    color: var(--olive);
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    background: var(--white);
+    border-bottom: 2px solid var(--sand-dark);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tabs button {
+    flex-shrink: 0;
+    padding: 14px 18px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s ease;
+  }
+  .nav-tabs button.active {
+    color: var(--olive);
+    border-bottom-color: var(--olive);
+  }
+  .nav-tabs button:hover:not(.active) {
+    color: var(--ink);
+  }
+
+  /* MAIN CONTENT */
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SHOPPING LIST */
+  .shop-intro {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--olive);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .shop-intro strong { color: var(--olive); }
+
+  .shop-category {
+    background: var(--white);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .shop-category-header {
+    background: var(--olive);
+    color: var(--white);
+    padding: 12px 20px;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .shop-category-header .icon { font-size: 1.1rem; }
+  .shop-items { padding: 4px 0; }
+  .shop-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 20px;
+    gap: 12px;
+    border-bottom: 1px solid var(--sand);
+    font-size: 0.92rem;
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-item input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: var(--olive);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .shop-item label {
+    cursor: pointer;
+    flex: 1;
+    line-height: 1.4;
+  }
+  .shop-item label.checked {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+  .shop-item .qty {
+    font-weight: 600;
+    color: var(--terra);
+    min-width: 80px;
+    font-size: 0.85rem;
+  }
+
+  /* PRINT BUTTON */
+  .print-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto 20px;
+    padding: 10px 24px;
+    background: var(--seafoam);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+  .print-btn:hover { background: var(--seafoam-light); }
+
+  /* DAY CARDS */
+  .day-section { margin-bottom: 32px; }
+  .day-header {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--olive);
+    padding: 16px 0 10px;
+    border-bottom: 2px solid var(--sand-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .day-header span {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .meal-card {
+    background: var(--white);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .meal-card-header {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--sand);
+  }
+  .meal-card-header:hover { background: var(--sand); }
+  .meal-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    flex-shrink: 0;
+  }
+  .badge-breakfast { background: #fff3cd; color: #856404; }
+  .badge-lunch { background: #d1e7dd; color: #0a3622; }
+  .badge-dinner { background: #cfe2ff; color: #084298; }
+
+  .meal-name {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    flex: 1;
+  }
+  .meal-toggle {
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition: transform 0.25s;
+  }
+  .meal-card.open .meal-toggle { transform: rotate(180deg); }
+
+  .meal-body {
+    display: none;
+    padding: 16px 18px;
+    animation: fadeIn 0.2s ease;
+  }
+  .meal-card.open .meal-body { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  .meal-section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  .meal-section-label:first-child { margin-top: 0; }
+
+  .ingredients-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .ingredients-list li {
+    background: var(--sand);
+    border-radius: 50px;
+    padding: 4px 12px;
+    font-size: 0.83rem;
+    color: var(--ink);
+  }
+
+  .steps-list {
+    list-style: none;
+    counter-reset: steps;
+  }
+  .steps-list li {
+    counter-increment: steps;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .steps-list li::before {
+    content: counter(steps);
+    background: var(--olive);
+    color: white;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .tip-box {
+    background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+    border-left: 3px solid var(--olive-light);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--seafoam);
+    margin-top: 14px;
+  }
+  .tip-box strong { display: block; margin-bottom: 2px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* CARDIAC TIPS PANEL */
+  .tips-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+  .tip-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border-top: 3px solid var(--terra);
+  }
+  .tip-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    color: var(--terra);
+  }
+  .tip-card p, .tip-card li {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .tip-card ul { padding-left: 16px; }
+  .tip-card li { margin-bottom: 4px; }
+
+  @media print {
+    .nav-tabs, .serving-toggle, header .serving-toggle, .print-btn { display: none !important; }
+    .panel { display: block !important; }
+    .meal-body { display: block !important; }
+    body { font-size: 12px; }
+    header { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>7-Day Mediterranean Cardiac Meal Plan</h1>
+  <p>Heart-Healthy · Low Sodium · Anti-Inflammatory</p>
+  <div class="serving-toggle">
+    <button class="active" onclick="setServings(2, this)">👥 2 People</button>
+    <button onclick="setServings(1, this)">👤 1 Person</button>
+  </div>
+</header>
+
+<nav class="nav-tabs">
+  <button class="active" onclick="showPanel('shopping', this)">🛒 Shopping List</button>
+  <button onclick="showPanel('day1', this)">Day 1</button>
+  <button onclick="showPanel('day2', this)">Day 2</button>
+  <button onclick="showPanel('day3', this)">Day 3</button>
+  <button onclick="showPanel('day4', this)">Day 4</button>
+  <button onclick="showPanel('day5', this)">Day 5</button>
+  <button onclick="showPanel('day6', this)">Day 6</button>
+  <button onclick="showPanel('day7', this)">Day 7</button>
+  <button onclick="showPanel('tips', this)">❤️ Heart Tips</button>
+</nav>
+
+<main>
+
+<!-- ===== SHOPPING LIST ===== -->
+<div class="panel active" id="panel-shopping">
+  <div class="shop-intro">
+    <strong>How to use this list:</strong> Quantities shown for <span id="serving-label">2 people</span> for the full 7 days. Check items off as you shop. Items marked in red are the quantities — adjust based on what you already have at home.
+  </div>
+
+  <button class="print-btn" onclick="window.print()">🖨️ Print Shopping List</button>
+
+  <!-- PRODUCE -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🥬</span> Produce</div>
+    <div class="shop-items" id="produce-items"></div>
+  </div>
+
+  <!-- PROTEINS -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🐟</span> Proteins</div>
+    <div class="shop-items" id="protein-items"></div>
+  </div>
+
+  <!-- DAIRY & EGGS -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🥚</span> Dairy & Eggs</div>
+    <div class="shop-items" id="dairy-items"></div>
+  </div>
+
+  <!-- GRAINS & PANTRY -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🌾</span> Grains & Pantry</div>
+    <div class="shop-items" id="grains-items"></div>
+  </div>
+
+  <!-- CANNED & JARRED -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🥫</span> Canned & Jarred</div>
+    <div class="shop-items" id="canned-items"></div>
+  </div>
+
+  <!-- NUTS, SEEDS & OILS -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🫒</span> Nuts, Seeds & Oils</div>
+    <div class="shop-items" id="nuts-items"></div>
+  </div>
+
+  <!-- HERBS & SEASONINGS -->
+  <div class="shop-category">
+    <div class="shop-category-header"><span class="icon">🌿</span> Herbs & Seasonings</div>
+    <div class="shop-items" id="herbs-items"></div>
+  </div>
+</div>
+
+<!-- ===== DAY PANELS ===== -->
+<div class="panel" id="panel-day1"></div>
+<div class="panel" id="panel-day2"></div>
+<div class="panel" id="panel-day3"></div>
+<div class="panel" id="panel-day4"></div>
+<div class="panel" id="panel-day5"></div>
+<div class="panel" id="panel-day6"></div>
+<div class="panel" id="panel-day7"></div>
+
+<!-- ===== CARDIAC TIPS ===== -->
+<div class="panel" id="panel-tips">
+  <div class="tips-grid">
+    <div class="tip-card">
+      <h3>🫒 Fats: The Heart-Healthy Way</h3>
+      <p>This plan uses olive oil as the primary fat. Always use extra-virgin cold-pressed. Avoid butter, coconut oil, and vegetable shortening. Avocados and nuts provide beneficial monounsaturated fats.</p>
+    </div>
+    <div class="tip-card">
+      <h3>🧂 Sodium Rules</h3>
+      <ul>
+        <li>Target: under 1,500 mg/day for cardiac patients</li>
+        <li>Choose no-salt-added canned tomatoes and beans</li>
+        <li>Rinse all canned beans before using</li>
+        <li>Use low-sodium vegetable broth only</li>
+        <li>Skip added salt — use lemon, herbs, and garlic instead</li>
+        <li>Check tuna: choose "no salt added" or rinse well</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>🐟 Omega-3 Priority Foods</h3>
+      <p>This plan prioritizes salmon, shrimp, tuna, and cod — all rich in omega-3 fatty acids that reduce inflammation and support heart rhythm. Aim for at least 2 servings of fatty fish per week (Days 1 and 7 cover this well).</p>
+    </div>
+    <div class="tip-card">
+      <h3>🍽️ Portion Awareness</h3>
+      <ul>
+        <li>Fish/chicken: 4–5 oz per serving</li>
+        <li>Grains (cooked): ½ cup per serving</li>
+        <li>Olive oil: 1 tbsp max per meal</li>
+        <li>Nuts: 1 oz (small handful) per serving</li>
+        <li>Feta: 1–2 tbsp — it's salty, use sparingly</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>💊 Medication Notes</h3>
+      <p>If taking warfarin (blood thinners), maintain consistent leafy green (spinach, arugula) intake week to week rather than varying dramatically. Grapefruit can interact with some cardiac medications — check with your doctor. This plan does not include grapefruit.</p>
+    </div>
+    <div class="tip-card">
+      <h3>🥗 Meal Prep Tips</h3>
+      <ul>
+        <li>Cook a big batch of quinoa and farro on Day 1 — use all week</li>
+        <li>Pre-wash and dry all greens on shopping day</li>
+        <li>Hard-boil 4–6 eggs at once for quick access</li>
+        <li>Make lentil soup in double batch (Days 2 & 7 lentils)</li>
+        <li>Grill extra chicken on Day 1 for Day 4 Greek salad</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+let servings = 2;
+
+// =================== DATA ===================
+
+const shoppingData = {
+  produce: [
+    { name: "Baby spinach", qty2: "2 (5 oz) bags", qty1: "1 (5 oz) bag" },
+    { name: "Arugula", qty2: "1 large container (5 oz)", qty1: "½ container" },
+    { name: "Mixed greens (salad mix)", qty2: "1 (5 oz) bag", qty1: "½ bag" },
+    { name: "Cherry tomatoes", qty2: "3 pints", qty1: "1½ pints" },
+    { name: "English cucumber", qty2: "3 large", qty1: "2 large" },
+    { name: "Red onion", qty2: "3 medium", qty1: "2 medium" },
+    { name: "Bell peppers (red, yellow, orange)", qty2: "6 peppers", qty1: "3 peppers" },
+    { name: "Zucchini", qty2: "4 medium", qty1: "2 medium" },
+    { name: "Eggplant", qty2: "2 medium", qty1: "1 medium" },
+    { name: "Broccoli", qty2: "1 large head", qty1: "1 small head" },
+    { name: "Green beans", qty2: "½ lb", qty1: "¼ lb" },
+    { name: "Carrots", qty2: "4 medium", qty1: "2 medium" },
+    { name: "Celery", qty2: "1 bunch", qty1: "½ bunch" },
+    { name: "Fresh garlic", qty2: "1 head", qty1: "1 head" },
+    { name: "Avocados (ripe)", qty2: "4", qty1: "2" },
+    { name: "Banana", qty2: "2", qty1: "1" },
+    { name: "Strawberries", qty2: "1 pint", qty1: "½ pint" },
+    { name: "Mixed berries (blueberries, raspberries)", qty2: "2 pints", qty1: "1 pint" },
+    { name: "Lemons", qty2: "6", qty1: "3" },
+    { name: "Tomatoes (large, beefsteak or roma)", qty2: "3", qty1: "2" },
+    { name: "Fresh parsley", qty2: "2 bunches", qty1: "1 bunch" },
+    { name: "Fresh herbs (thyme or rosemary)", qty2: "1 small bunch", qty1: "1 small bunch" },
+  ],
+  proteins: [
+    { name: "Salmon fillets (fresh or frozen)", qty2: "2 (6 oz) fillets", qty1: "1 (6 oz) fillet" },
+    { name: "Shrimp, large (peeled, deveined)", qty2: "1 lb", qty1: "½ lb" },
+    { name: "Cod fillets", qty2: "2 (5 oz) fillets", qty1: "1 (5 oz) fillet" },
+    { name: "Chicken breast, boneless skinless", qty2: "1.5 lbs", qty1: "¾ lb" },
+    { name: "Ground turkey (93% lean)", qty2: "¾ lb", qty1: "⅓ lb" },
+    { name: "Tuna (no-salt-added, canned in water)", qty2: "2 (5 oz) cans", qty1: "1 (5 oz) can" },
+  ],
+  dairy: [
+    { name: "Greek yogurt, plain (0% or 2% fat)", qty2: "32 oz container", qty1: "16 oz container" },
+    { name: "Eggs, large", qty2: "1 dozen", qty1: "½ dozen (6 eggs)" },
+    { name: "Feta cheese, crumbled", qty2: "4 oz block or container", qty1: "2 oz" },
+    { name: "Almond milk, unsweetened", qty2: "½ gallon", qty1: "1 quart" },
+  ],
+  grains: [
+    { name: "Quinoa, dry", qty2: "1½ cups (12 oz bag)", qty1: "¾ cup" },
+    { name: "Rolled oats (old-fashioned)", qty2: "1½ cups", qty1: "¾ cup" },
+    { name: "Farro, dry", qty2: "1 cup", qty1: "½ cup" },
+    { name: "Whole-wheat couscous", qty2: "1 cup", qty1: "½ cup" },
+    { name: "Whole-grain bread (low sodium)", qty2: "1 loaf", qty1: "1 loaf" },
+    { name: "Whole-grain wraps/tortillas", qty2: "4", qty1: "2" },
+    { name: "Granola (low sugar, no added salt)", qty2: "1 cup", qty1: "½ cup" },
+  ],
+  canned: [
+    { name: "Chickpeas (no-salt-added)", qty2: "2 (15 oz) cans", qty1: "1 (15 oz) can" },
+    { name: "White beans (cannellini, no-salt-added)", qty2: "1 (15 oz) can", qty1: "1 (15 oz) can" },
+    { name: "Green or brown lentils, dry (or 2 cans)", qty2: "1½ cups dry", qty1: "¾ cup dry" },
+    { name: "Diced tomatoes (no-salt-added)", qty2: "2 (14 oz) cans", qty1: "1 (14 oz) can" },
+    { name: "Low-sodium vegetable broth", qty2: "2 (32 oz) cartons", qty1: "1 (32 oz) carton" },
+    { name: "Kalamata olives (in water, not brine)", qty2: "½ cup", qty1: "¼ cup" },
+    { name: "Hummus (store-bought or homemade)", qty2: "1 (10 oz) container", qty1: "½ container" },
+    { name: "Balsamic vinegar", qty2: "1 bottle", qty1: "1 bottle" },
+  ],
+  nuts: [
+    { name: "Extra-virgin olive oil", qty2: "1 bottle (16 oz)", qty1: "1 bottle (16 oz)" },
+    { name: "Sliced almonds", qty2: "½ cup", qty1: "¼ cup" },
+    { name: "Walnuts, halves", qty2: "½ cup", qty1: "¼ cup" },
+    { name: "Almond butter (no-salt-added)", qty2: "1 jar", qty1: "1 jar" },
+    { name: "Honey (raw)", qty2: "1 small jar", qty1: "1 small jar" },
+    { name: "Chili flakes", qty2: "1 bottle", qty1: "1 bottle" },
+  ],
+  herbs: [
+    { name: "Dried oregano", qty2: "1 bottle", qty1: "1 bottle" },
+    { name: "Dried thyme", qty2: "1 bottle", qty1: "1 bottle" },
+    { name: "Garlic powder", qty2: "1 bottle", qty1: "1 bottle" },
+    { name: "Black pepper (ground)", qty2: "1 bottle", qty1: "1 bottle" },
+    { name: "Cumin", qty2: "1 bottle", qty1: "1 bottle" },
+    { name: "Paprika (smoked or sweet)", qty2: "1 bottle", qty1: "1 bottle" },
+    { name: "Bay leaves", qty2: "1 package", qty1: "1 package" },
+  ]
+};
+
+const meals = [
+  // DAY 1
+  {
+    day: 1,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Greek Yogurt Parfait",
+        ingredients2: ["2 cups Greek yogurt", "1 cup mixed berries", "½ cup granola", "2 tsp honey"],
+        ingredients1: ["1 cup Greek yogurt", "½ cup mixed berries", "¼ cup granola", "1 tsp honey"],
+        steps: [
+          "Spoon Greek yogurt into a bowl or glass.",
+          "Layer berries over the yogurt.",
+          "Top with granola and a light drizzle of honey.",
+          "Serve immediately so the granola stays crunchy."
+        ],
+        tip: "Use frozen berries thawed overnight to save money. Greek yogurt is high in protein and probiotics — both beneficial for heart health."
+      },
+      {
+        type: "Lunch",
+        name: "Quinoa Salad with Grilled Chicken",
+        ingredients2: ["2 cups cooked quinoa", "2 (4 oz) chicken breasts", "1 cucumber, diced", "1 cup cherry tomatoes, halved", "¼ red onion, thinly sliced", "¼ cup parsley, chopped", "2 tbsp olive oil", "juice of 1 lemon"],
+        ingredients1: ["1 cup cooked quinoa", "1 (4 oz) chicken breast", "½ cucumber, diced", "½ cup cherry tomatoes", "⅛ red onion", "2 tbsp parsley", "1 tbsp olive oil", "juice of ½ lemon"],
+        steps: [
+          "Rinse quinoa, then cook in water (1 cup quinoa : 2 cups water). Bring to boil, reduce heat, cover 15 min. Fluff and cool.",
+          "Season chicken with garlic powder, black pepper, and oregano. Grill or pan-sear over medium-high heat 4–5 min per side until cooked through. Rest 5 min, then slice.",
+          "Whisk together olive oil and lemon juice to make dressing.",
+          "Combine quinoa, cucumber, tomatoes, red onion, and parsley in a bowl. Drizzle with dressing and toss.",
+          "Top with sliced chicken and serve."
+        ],
+        tip: "Cook extra quinoa today — it keeps in the fridge 5 days and is used again on Day 7."
+      },
+      {
+        type: "Dinner",
+        name: "Baked Salmon with Roasted Vegetables",
+        ingredients2: ["2 (6 oz) salmon fillets", "1 zucchini, sliced", "2 bell peppers, sliced", "½ red onion, sliced", "2 tbsp olive oil", "2 slices whole-grain bread", "1 lemon, sliced", "fresh thyme or herbs"],
+        ingredients1: ["1 (6 oz) salmon fillet", "½ zucchini", "1 bell pepper", "¼ red onion", "1 tbsp olive oil", "1 slice whole-grain bread", "½ lemon"],
+        steps: [
+          "Preheat oven to 400°F (200°C). Line a baking sheet with parchment.",
+          "Toss sliced zucchini, peppers, and red onion with 1 tbsp olive oil and black pepper. Spread on half the baking sheet.",
+          "Place salmon skin-side down on the other half. Drizzle with remaining olive oil and squeeze lemon over the top. Add herbs.",
+          "Roast everything 18–22 minutes until salmon flakes easily and vegetables are tender and slightly caramelized.",
+          "Toast bread lightly and serve alongside."
+        ],
+        tip: "Salmon is the star cardiac food of this plan. The omega-3s reduce triglycerides and inflammation. Don't overcook — it should flake with a fork but still look slightly glossy in the center."
+      }
+    ]
+  },
+  // DAY 2
+  {
+    day: 2,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Avocado Toast with Egg",
+        ingredients2: ["2 slices whole-grain bread", "1 avocado", "2 eggs", "pinch chili flakes", "2 tbsp fresh parsley"],
+        ingredients1: ["1 slice whole-grain bread", "½ avocado", "1 egg", "pinch chili flakes"],
+        steps: [
+          "Toast bread until golden and sturdy.",
+          "Halve avocado, remove pit, and scoop flesh into a bowl. Mash with a fork. Season with black pepper and a squeeze of lemon if desired.",
+          "Fry or poach egg to your preference (poached is heart-healthier — no added fat).",
+          "Spread avocado on toast, top with egg, chili flakes, and fresh parsley."
+        ],
+        tip: "Avocado provides heart-healthy monounsaturated fats. Use ½ avocado per person max — it's calorie-dense."
+      },
+      {
+        type: "Lunch",
+        name: "Lentil and Vegetable Soup",
+        ingredients2: ["1 cup dry green lentils", "2 carrots, diced", "3 celery stalks, diced", "2 cups spinach", "1 (14 oz) can diced tomatoes (no salt)", "4 cups low-sodium vegetable broth", "2 garlic cloves, minced", "1 tsp cumin", "1 tbsp olive oil"],
+        ingredients1: ["½ cup dry green lentils", "1 carrot, diced", "2 celery stalks", "1 cup spinach", "½ can diced tomatoes", "2 cups low-sodium broth", "1 garlic clove", "½ tsp cumin", "½ tbsp olive oil"],
+        steps: [
+          "Rinse lentils in cold water. Sort out any small stones.",
+          "Heat olive oil in a large pot over medium heat. Add garlic, carrots, and celery. Cook 5 minutes until softened.",
+          "Add lentils, diced tomatoes (with juice), broth, cumin, and black pepper. Stir well.",
+          "Bring to a boil, reduce heat to low, cover and simmer 25–30 minutes until lentils are completely tender.",
+          "Stir in spinach in the last 5 minutes — it wilts quickly. Taste and adjust seasoning with black pepper or lemon juice.",
+          "Serve hot. Keeps well in fridge 4–5 days."
+        ],
+        tip: "Make a double batch of this soup — lentils come back on Day 7. Freeze extra portions in individual containers for easy future meals."
+      },
+      {
+        type: "Dinner",
+        name: "Grilled Shrimp and Spinach Salad",
+        ingredients2: ["½ lb large shrimp, peeled & deveined", "3 cups baby spinach", "1 cup arugula", "1 cup cherry tomatoes", "1 cucumber, sliced", "2 tbsp balsamic vinegar", "1 tbsp olive oil"],
+        ingredients1: ["¼ lb shrimp", "1½ cups spinach", "½ cup arugula", "½ cup cherry tomatoes", "½ cucumber", "1 tbsp balsamic vinegar", "½ tbsp olive oil"],
+        steps: [
+          "Pat shrimp dry. Toss with a little olive oil, garlic powder, and black pepper.",
+          "Heat a grill pan or skillet over high heat. Cook shrimp 2 minutes per side until pink and curled. Do not overcook.",
+          "Assemble salad: spinach, arugula, tomatoes, and cucumber in a bowl.",
+          "Whisk balsamic vinegar and olive oil together for dressing.",
+          "Top salad with shrimp and drizzle with dressing."
+        ],
+        tip: "Shrimp is low in fat and high in protein and selenium. The balsamic dressing has no added salt — rely on its natural acidity for flavor."
+      }
+    ]
+  },
+  // DAY 3
+  {
+    day: 3,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Oatmeal with Almonds and Fruit",
+        ingredients2: ["1 cup rolled oats", "2 cups almond milk (unsweetened)", "1 banana, sliced", "½ cup blueberries", "¼ cup sliced almonds", "1 tsp honey"],
+        ingredients1: ["½ cup rolled oats", "1 cup almond milk", "½ banana", "¼ cup blueberries", "2 tbsp sliced almonds", "½ tsp honey"],
+        steps: [
+          "Combine oats and almond milk in a small saucepan over medium heat.",
+          "Stir occasionally and cook 5 minutes until oats are thick and creamy.",
+          "Pour into bowls and top with banana, blueberries, almonds, and a small drizzle of honey."
+        ],
+        tip: "Oats contain beta-glucan fiber which helps lower LDL cholesterol. Almond milk keeps it dairy-free and lower in saturated fat."
+      },
+      {
+        type: "Lunch",
+        name: "Mediterranean Chickpea Bowl",
+        ingredients2: ["1 (15 oz) can chickpeas, rinsed", "1 cucumber, diced", "1 cup cherry tomatoes, halved", "¼ cup kalamata olives", "¼ red onion, thinly sliced", "2 tbsp olive oil", "juice of 1 lemon", "1 tsp oregano"],
+        ingredients1: ["½ can chickpeas", "½ cucumber", "½ cup cherry tomatoes", "2 tbsp olives", "⅛ red onion", "1 tbsp olive oil", "juice of ½ lemon"],
+        steps: [
+          "Rinse and drain chickpeas thoroughly.",
+          "Combine chickpeas, cucumber, tomatoes, olives, and red onion in a bowl.",
+          "Whisk olive oil, lemon juice, and oregano together. Pour over bowl and toss.",
+          "Let sit 5 minutes before serving so flavors come together."
+        ],
+        tip: "No cooking required. Chickpeas are rich in soluble fiber and plant protein — great for heart and blood sugar management."
+      },
+      {
+        type: "Dinner",
+        name: "Grilled Chicken with Ratatouille",
+        ingredients2: ["2 (5 oz) chicken breasts", "1 small eggplant, cubed", "1 zucchini, sliced", "2 bell peppers, sliced", "2 tomatoes, chopped", "2 garlic cloves, minced", "2 tbsp olive oil", "1 tsp thyme", "1 tsp oregano"],
+        ingredients1: ["1 (5 oz) chicken breast", "½ small eggplant", "½ zucchini", "1 bell pepper", "1 tomato", "1 garlic clove", "1 tbsp olive oil", "½ tsp thyme"],
+        steps: [
+          "Cube eggplant and salt lightly if time allows (draws out bitterness) — pat dry after 10 min.",
+          "Heat 1 tbsp olive oil in a large skillet over medium heat. Add garlic, eggplant, and zucchini. Cook 8 minutes stirring occasionally.",
+          "Add bell peppers, tomatoes, thyme, and oregano. Cook another 10 minutes until everything is tender. This is your ratatouille.",
+          "Season chicken with herbs and black pepper. Grill or pan-cook 4–5 min per side until cooked through.",
+          "Serve chicken alongside or on top of the ratatouille."
+        ],
+        tip: "Ratatouille stores beautifully for 3–4 days. Make extra and use as a side or over grains later in the week."
+      }
+    ]
+  },
+  // DAY 4
+  {
+    day: 4,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Spinach and Feta Omelette",
+        ingredients2: ["4 eggs", "1 cup baby spinach", "2 tbsp feta cheese, crumbled", "1 tbsp olive oil", "black pepper"],
+        ingredients1: ["2 eggs", "½ cup baby spinach", "1 tbsp feta cheese", "½ tbsp olive oil"],
+        steps: [
+          "Whisk eggs with a little water (makes them fluffier) and a grind of black pepper.",
+          "Heat olive oil in a non-stick skillet over medium-low heat.",
+          "Pour in eggs. As edges begin to set, gently lift them and tilt the pan to allow uncooked egg to flow underneath.",
+          "When mostly set but still slightly glossy on top, add spinach and feta to one half.",
+          "Fold the omelette over the filling and slide onto a plate. Spinach will wilt from the heat of the eggs."
+        ],
+        tip: "Feta is salty — keep to 1 tbsp per person max. Eggs provide heart-healthy choline and protein; 1–2 eggs per day is well within cardiac dietary guidelines for most people."
+      },
+      {
+        type: "Lunch",
+        name: "Greek Salad with Grilled Chicken",
+        ingredients2: ["2 cups mixed greens", "leftover chicken (or 2 fresh breasts, grilled)", "1 cucumber, sliced", "1 cup cherry tomatoes", "¼ cup kalamata olives", "2 tbsp feta, crumbled", "2 tbsp olive oil", "juice of 1 lemon"],
+        ingredients1: ["1 cup mixed greens", "1 portion leftover chicken", "½ cucumber", "½ cup cherry tomatoes", "2 tbsp olives", "1 tbsp feta", "1 tbsp olive oil", "juice of ½ lemon"],
+        steps: [
+          "If using leftover chicken from Day 1 or 3, simply slice cold. If cooking fresh, grill seasoned chicken breast 4–5 min per side.",
+          "Arrange greens in a bowl. Layer cucumber, tomatoes, olives, and feta on top.",
+          "Whisk lemon juice and olive oil. Drizzle over salad.",
+          "Add chicken slices on top. Serve immediately."
+        ],
+        tip: "This is a great use-up meal for leftover grilled chicken. Plan ahead and grill extra on Day 3 to save time today."
+      },
+      {
+        type: "Dinner",
+        name: "Lemon Herb Baked Cod with Farro",
+        ingredients2: ["2 (5 oz) cod fillets", "1 cup dry farro", "1 cup green beans, trimmed", "2 tbsp olive oil", "juice of 1 lemon", "2 garlic cloves, minced", "1 tsp thyme", "1 tsp parsley"],
+        ingredients1: ["1 (5 oz) cod fillet", "½ cup dry farro", "½ cup green beans", "1 tbsp olive oil", "juice of ½ lemon", "1 garlic clove", "½ tsp thyme"],
+        steps: [
+          "Cook farro: rinse, then simmer in 2.5x water for 25–30 minutes until chewy-tender. Drain any excess water.",
+          "Preheat oven to 400°F. Place cod on a parchment-lined baking sheet.",
+          "Mix olive oil, lemon juice, minced garlic, thyme, and parsley. Spoon over the cod.",
+          "Bake 14–16 minutes until cod is opaque and flakes easily with a fork.",
+          "While cod bakes, blanch green beans in boiling water 3–4 minutes. Drain.",
+          "Serve cod over farro with green beans on the side."
+        ],
+        tip: "Farro is an ancient grain with more fiber and protein than white rice. It has a pleasantly nutty, chewy texture. Cook a larger batch and refrigerate for the week."
+      }
+    ]
+  },
+  // DAY 5
+  {
+    day: 5,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Almond Butter Toast with Strawberries",
+        ingredients2: ["2 slices whole-grain bread", "3 tbsp almond butter (no salt)", "1 cup fresh strawberries, sliced"],
+        ingredients1: ["1 slice whole-grain bread", "1½ tbsp almond butter", "½ cup strawberries"],
+        steps: [
+          "Toast bread.",
+          "Spread almond butter generously on each slice.",
+          "Slice strawberries and arrange on top."
+        ],
+        tip: "Almond butter provides heart-healthy fats, vitamin E, and magnesium. Choose a brand with no added salt or sugar — the only ingredient should be almonds."
+      },
+      {
+        type: "Lunch",
+        name: "Tuna and White Bean Salad",
+        ingredients2: ["2 (5 oz) cans tuna in water (no salt), drained", "1 (15 oz) can white beans, rinsed", "2 cups arugula", "1 cup cherry tomatoes", "2 tbsp olive oil", "juice of 1 lemon", "black pepper"],
+        ingredients1: ["1 can tuna, drained", "½ can white beans", "1 cup arugula", "½ cup cherry tomatoes", "1 tbsp olive oil", "juice of ½ lemon"],
+        steps: [
+          "Rinse and drain white beans and tuna well (reduces sodium significantly).",
+          "In a bowl, combine tuna and white beans.",
+          "Add arugula and cherry tomatoes. Drizzle with olive oil and lemon juice.",
+          "Toss gently and season with black pepper."
+        ],
+        tip: "White beans are high in soluble fiber, potassium, and plant protein — all beneficial for blood pressure and heart health. This lunch is entirely no-cook."
+      },
+      {
+        type: "Dinner",
+        name: "Mediterranean Turkey Meatballs with Couscous",
+        ingredients2: ["¾ lb ground turkey (93% lean)", "1 egg", "2 tbsp parsley, chopped", "1 tsp oregano", "1 tsp garlic powder", "1 cup whole-wheat couscous", "2 cups baby spinach, sautéed", "1 tbsp olive oil"],
+        ingredients1: ["⅓ lb ground turkey", "1 egg", "1 tbsp parsley", "½ tsp oregano", "½ tsp garlic powder", "½ cup whole-wheat couscous", "1 cup spinach", "½ tbsp olive oil"],
+        steps: [
+          "Combine turkey, egg, parsley, oregano, garlic powder, and black pepper. Mix gently — don't overwork.",
+          "Form into golf-ball-sized meatballs (about 12 for 2 servings).",
+          "Heat olive oil in an oven-safe skillet. Brown meatballs 3 min per side. Transfer skillet to 375°F oven for 10–12 min until cooked through (165°F internal).",
+          "While meatballs bake: pour boiling water over couscous (1:1 ratio), cover, let sit 5 minutes, then fluff with a fork.",
+          "Sauté spinach in the same pan with a tiny bit of olive oil until wilted.",
+          "Serve meatballs over couscous with spinach alongside."
+        ],
+        tip: "Ground turkey is leaner than beef or lamb. Baking after browning keeps them moist without extra fat. No breadcrumbs means these are gluten-free adaptable."
+      }
+    ]
+  },
+  // DAY 6
+  {
+    day: 6,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Greek Yogurt with Walnuts and Honey",
+        ingredients2: ["2 cups Greek yogurt", "¼ cup walnuts, roughly chopped", "2 tsp honey"],
+        ingredients1: ["1 cup Greek yogurt", "2 tbsp walnuts", "1 tsp honey"],
+        steps: [
+          "Spoon Greek yogurt into bowls.",
+          "Top with walnuts and drizzle with honey.",
+          "Serve immediately."
+        ],
+        tip: "Walnuts are uniquely high in ALA omega-3 fatty acids among tree nuts. They actively support heart health and cognitive function."
+      },
+      {
+        type: "Lunch",
+        name: "Chickpea and Avocado Wrap",
+        ingredients2: ["2 whole-grain wraps", "1 (15 oz) can chickpeas, rinsed", "1 avocado, sliced", "1 cup arugula", "juice of ½ lemon", "black pepper"],
+        ingredients1: ["1 whole-grain wrap", "½ can chickpeas", "½ avocado", "½ cup arugula", "juice of ¼ lemon"],
+        steps: [
+          "Drain and rinse chickpeas. Lightly mash half of them with a fork to create texture that holds the wrap together.",
+          "Layer wrap with arugula first.",
+          "Add chickpeas (mashed and whole) and avocado slices.",
+          "Squeeze lemon over filling, add a grind of black pepper.",
+          "Fold and wrap tightly. Cut in half on the diagonal."
+        ],
+        tip: "No cooking at all for this lunch. The mashed chickpeas act as a binder so the wrap stays together without any mayo or creamy dressings."
+      },
+      {
+        type: "Dinner",
+        name: "Grilled Vegetable Platter with Hummus",
+        ingredients2: ["1 zucchini", "1 small eggplant", "2 bell peppers", "1 red onion", "½ cup hummus", "2 tbsp olive oil", "1 tsp oregano"],
+        ingredients1: ["½ zucchini", "½ eggplant", "1 bell pepper", "½ red onion", "¼ cup hummus", "1 tbsp olive oil"],
+        steps: [
+          "Preheat grill or grill pan to medium-high.",
+          "Slice all vegetables: zucchini into rounds, eggplant into half-inch planks, peppers into large strips, onion into rings.",
+          "Toss vegetables with olive oil, oregano, and black pepper.",
+          "Grill in batches, 3–4 minutes per side, until tender with nice char marks.",
+          "Arrange on a large platter and serve with hummus for dipping.",
+          "Optionally add a slice of whole-grain bread on the side."
+        ],
+        tip: "This is a fully plant-based dinner — excellent for the heart. Hummus provides plant protein and tahini (sesame) contributes calcium and healthy fats."
+      }
+    ]
+  },
+  // DAY 7
+  {
+    day: 7,
+    meals: [
+      {
+        type: "Breakfast",
+        name: "Tomato and Avocado Toast",
+        ingredients2: ["2 slices whole-grain bread", "1 avocado", "2 tomatoes, sliced", "½ tsp dried oregano", "black pepper"],
+        ingredients1: ["1 slice whole-grain bread", "½ avocado", "1 tomato", "pinch oregano"],
+        steps: [
+          "Toast bread.",
+          "Mash avocado with fork, season with black pepper.",
+          "Spread avocado on toast.",
+          "Layer tomato slices on top and sprinkle with oregano."
+        ],
+        tip: "Simple, no-cook, and nourishing. Tomatoes provide lycopene — an antioxidant associated with reduced cardiovascular disease risk."
+      },
+      {
+        type: "Lunch",
+        name: "Mediterranean Lentil Bowl",
+        ingredients2: ["1½ cups cooked lentils (from Day 2 or fresh)", "1 cucumber, diced", "1 cup cherry tomatoes, halved", "¼ cup parsley, chopped", "1 tbsp balsamic vinegar", "1 tbsp olive oil"],
+        ingredients1: ["¾ cup cooked lentils", "½ cucumber", "½ cup cherry tomatoes", "2 tbsp parsley", "½ tbsp balsamic vinegar", "½ tbsp olive oil"],
+        steps: [
+          "If using leftover lentil soup from Day 2: drain most of the liquid and use the cooked lentils.",
+          "If cooking fresh lentils: simmer ½ cup dry lentils in 1.5 cups water 20 min until tender. Drain and cool.",
+          "Combine lentils with cucumber, tomatoes, and parsley.",
+          "Drizzle with balsamic and olive oil. Toss and serve."
+        ],
+        tip: "Using leftover lentils here is the ideal scenario — Day 2's double batch pays off. This bowl is high in fiber, potassium, and plant iron."
+      },
+      {
+        type: "Dinner",
+        name: "Garlic Herb Shrimp with Quinoa Pilaf",
+        ingredients2: ["½ lb large shrimp, peeled & deveined", "1½ cups cooked quinoa (Day 1 leftovers)", "2 garlic cloves, minced", "¼ cup parsley, chopped", "1 head broccoli, cut into florets", "2 tbsp olive oil", "juice of 1 lemon"],
+        ingredients1: ["¼ lb shrimp", "¾ cup cooked quinoa", "1 garlic clove", "2 tbsp parsley", "½ head broccoli", "1 tbsp olive oil", "juice of ½ lemon"],
+        steps: [
+          "Steam or boil broccoli florets 4–5 minutes until bright green and just tender. Drain.",
+          "Heat 1 tbsp olive oil in a skillet over medium-high heat. Add garlic and cook 1 minute until fragrant.",
+          "Add shrimp. Cook 2 min per side until pink — do not crowd the pan.",
+          "Add lemon juice to the pan and toss. Remove from heat, add parsley.",
+          "Warm quinoa if needed (splash of water, cover, microwave 1 min).",
+          "Plate quinoa, top with garlic shrimp and broccoli."
+        ],
+        tip: "This is a fitting end to the week — using up leftover quinoa and getting a final serving of shrimp. Garlic has well-documented cardioprotective properties."
+      }
+    ]
+  }
+];
+
+// =================== RENDER SHOPPING LIST ===================
+
+function renderShoppingList() {
+  const s = servings;
+
+  function renderCategory(containerId, items) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    items.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'shop-item';
+      const id = `${containerId}-${i}`;
+      div.innerHTML = `
+        <input type="checkbox" id="${id}" onchange="toggleCheck('${id}')">
+        <span class="qty">${s === 2 ? item.qty2 : item.qty1}</span>
+        <label id="lbl-${id}" for="${id}">${item.name}</label>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  renderCategory('produce-items', shoppingData.produce);
+  renderCategory('protein-items', shoppingData.proteins);
+  renderCategory('dairy-items', shoppingData.dairy);
+  renderCategory('grains-items', shoppingData.grains);
+  renderCategory('canned-items', shoppingData.canned);
+  renderCategory('nuts-items', shoppingData.nuts);
+  renderCategory('herbs-items', shoppingData.herbs);
+}
+
+function toggleCheck(id) {
+  const cb = document.getElementById(id);
+  const lbl = document.getElementById('lbl-' + id);
+  if (cb.checked) { lbl.classList.add('checked'); }
+  else { lbl.classList.remove('checked'); }
+}
+
+// =================== RENDER DAYS ===================
+
+function badgeClass(type) {
+  if (type === 'Breakfast') return 'badge-breakfast';
+  if (type === 'Lunch') return 'badge-lunch';
+  return 'badge-dinner';
+}
+
+function renderDays() {
+  meals.forEach(day => {
+    const panel = document.getElementById(`panel-day${day.day}`);
+    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    let html = `<div class="day-section"><div class="day-header">Day ${day.day} <span>${dayNames[day.day - 1]}</span></div>`;
+
+    day.meals.forEach((meal, mi) => {
+      const ingKey = servings === 2 ? 'ingredients2' : 'ingredients1';
+      const ingredientsList = meal[ingKey].map(i => `<li>${i}</li>`).join('');
+      const stepsList = meal.steps.map(s => `<li>${s}</li>`).join('');
+      const mealId = `meal-d${day.day}-m${mi}`;
+
+      html += `
+        <div class="meal-card" id="${mealId}">
+          <div class="meal-card-header" onclick="toggleMeal('${mealId}')">
+            <span class="meal-badge ${badgeClass(meal.type)}">${meal.type}</span>
+            <span class="meal-name">${meal.name}</span>
+            <span class="meal-toggle">▼</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-section-label">Ingredients (${servings === 2 ? '2 people' : '1 person'})</div>
+            <ul class="ingredients-list">${ingredientsList}</ul>
+            <div class="meal-section-label">How to Make It</div>
+            <ol class="steps-list">${stepsList}</ol>
+            ${meal.tip ? `<div class="tip-box"><strong>💚 Heart Tip</strong>${meal.tip}</div>` : ''}
+          </div>
+        </div>`;
+    });
+
+    html += '</div>';
+    panel.innerHTML = html;
+  });
+}
+
+function toggleMeal(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+// =================== PANEL NAV ===================
+
+function showPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// =================== SERVINGS TOGGLE ===================
+
+function setServings(n, btn) {
+  servings = n;
+  document.querySelectorAll('.serving-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('serving-label').textContent = n === 2 ? '2 people' : '1 person';
+  renderShoppingList();
+  renderDays();
+}
+
+// =================== INIT ===================
+renderShoppingList();
+renderDays();
+</script>
+</body>
+</html>
