@@ -396,6 +396,49 @@
   .tip-card ul { padding-left: 16px; }
   .tip-card li { margin-bottom: 4px; }
 
+
+  /* PREP TOGGLE */
+  .prep-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 10px auto 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 4px;
+    width: fit-content;
+    position: relative;
+  }
+  .prep-toggle button {
+    padding: 7px 18px;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.03em;
+  }
+  .prep-toggle button.active {
+    background: var(--white);
+    color: var(--olive);
+  }
+  .prepped-badge {
+    display: inline-block;
+    background: #e8f5e8;
+    color: var(--olive);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+  }
+
   @media print {
     .nav-tabs, .serving-toggle, header .serving-toggle, .print-btn { display: none !important; }
     .panel { display: block !important; }
@@ -413,6 +456,10 @@
   <div class="serving-toggle">
     <button onclick="setServings(2, this)">👥 2 People</button>
     <button class="active" onclick="setServings(1, this)">👤 1 Person</button>
+  </div>
+  <div class="prep-toggle" id="prep-toggle-wrap">
+    <button class="active" onclick="setPrepped(false, this)">🍳 Fresh Instructions</button>
+    <button onclick="setPrepped(true, this)">✅ Food Prepped</button>
   </div>
 </header>
 
@@ -546,6 +593,7 @@
 
 <script>
 let servings = 1;
+let isPrepped = false;
 
 // =================== DATA ===================
 
@@ -1032,6 +1080,148 @@ function badgeClass(type) {
   return 'badge-dinner';
 }
 
+
+const preppedSteps = {
+  // day-mealindex: [steps]
+  "1-0": [ // Day 1 Breakfast - Greek Yogurt Parfait
+    "Grab the Greek yogurt from the fridge.",
+    "Spoon into a bowl. Top with berries, granola, and a drizzle of honey.",
+    "Ready in 2 minutes — no cooking needed."
+  ],
+  "1-1": [ // Day 1 Lunch - Quinoa Salad with Grilled Chicken
+    "Grab the container with the cooked quinoa (small white fluffy grains) and the container with the sliced cooked chicken from the fridge.",
+    "Scoop quinoa into a bowl. Add cucumber, cherry tomatoes, red onion, and parsley from the containers with chopped vegetables.",
+    "Drizzle with the jar of lemon-olive oil dressing. Toss well.",
+    "Top with sliced chicken. Done in 5 minutes."
+  ],
+  "1-2": [ // Day 1 Dinner - Baked Salmon with Roasted Vegetables
+    "Salmon needs to be cooked fresh — preheat oven to 400°F.",
+    "Line a small baking sheet with parchment. Place salmon skin-side down.",
+    "Drizzle with olive oil, squeeze lemon over top, add black pepper and herbs.",
+    "Bake 18–20 minutes until salmon flakes easily with a fork.",
+    "While salmon bakes: scoop the container with the roasted mixed vegetables (zucchini, peppers, eggplant) onto a plate and microwave 1 minute to warm.",
+    "Serve salmon alongside warm veggies. Toast a slice of whole-grain bread if hungry."
+  ],
+  "2-0": [ // Day 2 Breakfast - Avocado Toast with Egg
+    "Toast 1 slice of whole-grain bread.",
+    "Halve an avocado, mash with a fork, season with black pepper.",
+    "Fry or poach 1 egg — about 3 minutes.",
+    "Spread avocado on toast, top with egg and a pinch of chili flakes."
+  ],
+  "2-1": [ // Day 2 Lunch - Lentil Soup
+    "Find the container with the lentil soup — it will look like a thick brownish-orange soup with vegetables in it.",
+    "Pour into a small pot or microwave-safe bowl.",
+    "Heat on stove over medium 4–5 minutes, or microwave 2–3 minutes stirring halfway.",
+    "Add a squeeze of lemon before eating. Serve with a slice of whole-grain bread if hungry."
+  ],
+  "2-2": [ // Day 2 Dinner - Grilled Shrimp Salad
+    "Shrimp needs to be cooked fresh — pat shrimp dry and toss with a little olive oil, garlic powder, and black pepper.",
+    "Heat a skillet over high heat. Cook shrimp 2 minutes per side until pink and curled.",
+    "While shrimp cooks: grab the container with the washed leafy greens and add to a bowl along with cherry tomatoes and sliced cucumber from the chopped veg containers.",
+    "Drizzle with balsamic vinegar and olive oil.",
+    "Top salad with hot shrimp and serve immediately."
+  ],
+  "3-0": [ // Day 3 Breakfast - Oatmeal
+    "Combine ½ cup oats and 1 cup almond milk in a small pot.",
+    "Cook over medium heat 5 minutes, stirring occasionally until thick and creamy.",
+    "Top with banana, blueberries, almonds, and a tiny drizzle of honey."
+  ],
+  "3-1": [ // Day 3 Lunch - Chickpea Bowl
+    "Find the container with the rinsed chickpeas — they look like small round beige beans.",
+    "Scoop into a bowl. Add cucumber, cherry tomatoes, olives, and red onion from the chopped veg containers.",
+    "Drizzle with the jar of lemon-olive oil dressing and toss.",
+    "No cooking needed. Ready in 3 minutes."
+  ],
+  "3-2": [ // Day 3 Dinner - Chicken with Ratatouille
+    "Grab the container with the sliced cooked chicken and the container with the roasted mixed vegetables (zucchini, peppers, eggplant) from the fridge.",
+    "Scoop roasted veg into a skillet with a splash of water and 1 tsp olive oil. Heat over medium 4–5 minutes until warmed through — this is your ratatouille.",
+    "Lay chicken slices in the pan for the last 1–2 minutes to warm through, or microwave separately 1 minute covered.",
+    "Plate chicken alongside the warmed vegetables."
+  ],
+  "4-0": [ // Day 4 Breakfast - Spinach Feta Omelette
+    "Whisk 2 eggs with a splash of water and black pepper.",
+    "Heat ½ tbsp olive oil in a non-stick pan over medium-low.",
+    "Pour in eggs. When edges start to set, add a handful of spinach from the container with washed leafy greens and 1 tbsp feta cheese.",
+    "Fold over and slide onto a plate. Done in 5 minutes."
+  ],
+  "4-1": [ // Day 4 Lunch - Greek Salad with Chicken
+    "Grab the container with the sliced cooked chicken from the fridge.",
+    "Add mixed greens to a bowl. Top with cucumber, cherry tomatoes, olives from the chopped veg containers, and 1 tbsp crumbled feta.",
+    "Drizzle with the jar of lemon-olive oil dressing.",
+    "Add sliced chicken on top. Done in 3 minutes."
+  ],
+  "4-2": [ // Day 4 Dinner - Cod with Farro
+    "Cod needs to be cooked fresh — preheat oven to 400°F.",
+    "Grab the container with the cooked farro (chewy brownish grain) and the container with the blanched green beans from the fridge.",
+    "Place cod on a parchment-lined baking sheet. Mix 1 tbsp olive oil, juice of ½ lemon, 1 minced garlic clove, and a pinch of thyme. Spoon over cod.",
+    "Bake 14–16 minutes until cod flakes easily with a fork.",
+    "Microwave farro 1 minute with a splash of water. Microwave green beans 1 minute.",
+    "Plate cod over farro with green beans on the side."
+  ],
+  "5-0": [ // Day 5 Breakfast - Almond Butter Toast
+    "Toast 1 slice of whole-grain bread.",
+    "Spread with 1½ tbsp almond butter.",
+    "Slice fresh strawberries on top. Done in 2 minutes."
+  ],
+  "5-1": [ // Day 5 Lunch - Tuna White Bean Salad
+    "Open and drain 1 can of tuna. Rinse well under cold water to reduce sodium.",
+    "Grab the container with the rinsed white beans — they look like large smooth white beans.",
+    "Combine tuna and white beans in a bowl. Add arugula from the container with washed leafy greens and cherry tomatoes from the chopped veg container.",
+    "Drizzle with olive oil and a squeeze of lemon. No cooking at all."
+  ],
+  "5-2": [ // Day 5 Dinner - Turkey Meatballs with Couscous
+    "Grab the container with the cooked turkey meatballs — small round balls about the size of a golf ball.",
+    "Pour ½ cup boiling water over ½ cup dry couscous in a bowl. Cover with a plate and wait 5 minutes, then fluff with a fork.",
+    "While couscous steams: warm meatballs in a skillet with a splash of water over medium heat 3–4 minutes. Or microwave 2 minutes covered with a damp paper towel.",
+    "In the same pan, add a handful of spinach from the container with washed leafy greens — it wilts in 1 minute.",
+    "Serve meatballs over couscous with spinach on the side."
+  ],
+  "6-0": [ // Day 6 Breakfast - Greek Yogurt Walnuts
+    "Spoon Greek yogurt into a bowl.",
+    "Top with walnuts and a drizzle of honey.",
+    "Done in 1 minute."
+  ],
+  "6-1": [ // Day 6 Lunch - Chickpea Avocado Wrap
+    "Grab the container with the rinsed chickpeas from the fridge.",
+    "Lay out a whole-grain wrap. Add a handful of arugula from the container with washed leafy greens.",
+    "Scoop chickpeas onto the wrap and mash about half of them with a fork right on the wrap — this holds everything together.",
+    "Add slices of fresh avocado on top. Squeeze lemon over, add black pepper, fold and wrap tightly. No cooking."
+  ],
+  "6-2": [ // Day 6 Dinner - Grilled Veg Platter
+    "Grab the container with the roasted mixed vegetables (zucchini, peppers, eggplant, red onion) from the fridge.",
+    "Spread veg on a baking sheet and warm in oven at 375°F for 8 minutes, or spread on a plate and microwave 2 minutes.",
+    "Arrange on a plate with a generous scoop of hummus for dipping.",
+    "Add a slice of whole-grain bread on the side if hungry."
+  ],
+  "7-0": [ // Day 7 Breakfast - Tomato Avocado Toast
+    "Toast 1 slice of whole-grain bread.",
+    "Mash ½ avocado with a fork, season with black pepper.",
+    "Spread on toast, top with sliced fresh tomato and a pinch of dried oregano."
+  ],
+  "7-1": [ // Day 7 Lunch - Lentil Bowl
+    "Grab the container with the plain cooked lentils — small dark green or brown round legumes.",
+    "Scoop into a bowl. Add diced cucumber, cherry tomatoes, and parsley from the chopped veg containers.",
+    "Drizzle with balsamic vinegar and a little olive oil. Toss and eat cold or microwave 1 minute first — both are great."
+  ],
+  "7-2": [ // Day 7 Dinner - Garlic Shrimp Quinoa
+    "Grab the container with the cooked quinoa (small white fluffy grains) from the fridge.",
+    "Microwave quinoa with a splash of water for 1 minute to warm.",
+    "Steam or microwave broccoli 3–4 minutes until bright green.",
+    "Heat 1 tbsp olive oil in a skillet over medium-high. Add 1 minced garlic clove, cook 1 minute until fragrant.",
+    "Add fresh shrimp. Cook 2 minutes per side until pink and curled.",
+    "Add a squeeze of lemon and chopped parsley. Remove from heat.",
+    "Plate quinoa, top with garlic shrimp and broccoli."
+  ]
+};
+
+function setPrepped(val, btn) {
+  isPrepped = val;
+  document.querySelectorAll('.prep-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDays();
+  restoreChecks();
+}
+
 function renderDays() {
   meals.forEach(day => {
     const panel = document.getElementById(`panel-day${day.day}`);
@@ -1041,7 +1231,10 @@ function renderDays() {
     day.meals.forEach((meal, mi) => {
       const ingKey = servings === 2 ? 'ingredients2' : 'ingredients1';
       const ingredientsList = meal[ingKey].map(i => `<li>${i}</li>`).join('');
-      const stepsList = meal.steps.map(s => `<li>${s}</li>`).join('');
+      const prepKey = `${day.day}-${mi}`;
+      const stepsToUse = isPrepped && preppedSteps[prepKey] ? preppedSteps[prepKey] : meal.steps;
+      const stepsList = stepsToUse.map(s => `<li>${s}</li>`).join('');
+      const preppedLabel = isPrepped && preppedSteps[prepKey] ? '<span class="prepped-badge">✅ Food Prepped Mode</span><br>' : '';
       const mealId = `meal-d${day.day}-m${mi}`;
 
       html += `
@@ -1054,7 +1247,7 @@ function renderDays() {
           <div class="meal-body">
             <div class="meal-section-label">Ingredients (${servings === 2 ? '2 people' : '1 person'})</div>
             <ul class="ingredients-list">${ingredientsList}</ul>
-            <div class="meal-section-label">How to Make It</div>
+            ${preppedLabel}<div class="meal-section-label">${isPrepped && preppedSteps[`${day.day}-${mi}`] ? "How to Assemble & Reheat" : "How to Make It"}</div>
             <ol class="steps-list">${stepsList}</ol>
             ${meal.tip ? `<div class="tip-box"><strong>💚 Heart Tip</strong>${meal.tip}</div>` : ''}
           </div>
